@@ -11,14 +11,18 @@ jobs:
   publish_images:
     runs-on: ubuntu-latest
     steps:
-      - name: checkout
+      - name: Checkout Repository
         uses: actions/checkout@v4
-      - name: build image
+
+      - name: Log in to Docker Hub
+        run: echo "${{ secrets.KKRISH7 }}" | docker login -u "kkrish7" --password-stdin
+
+      - name: Build Docker Images
         run: |
           docker build ./api/ -t kkrish7/devops-qr-code-backend:latest
           docker build ./front-end-nextjs/ -t kkrish7/devops-qr-code-frontend:latest
-      - name: push image to docker hub
+
+      - name: Push Images to Docker Hub
         run: |
-          docker login -u kkrish7 -p ${{ secrets.DOCKER_HUB_TOKEN }}
           docker push kkrish7/devops-qr-code-backend:latest
-          docker push kkrish7/devops-qr-code-frontend:latestS
+          docker push kkrish7/devops-qr-code-frontend:latest
